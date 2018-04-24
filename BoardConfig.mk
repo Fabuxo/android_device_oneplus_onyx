@@ -52,8 +52,10 @@ BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 BOARD_KERNEL_IMAGE_NAME := zImage-dtb
 TARGET_KERNEL_ARCH := arm
-TARGET_KERNEL_CONFIG := lineageos_onyx_defconfig
+TARGET_KERNEL_CONFIG := onyx_defconfig
 TARGET_KERNEL_SOURCE := kernel/oneplus/onyx
+KERNEL_TOOLCHAIN := /home/ghost/arm-androideabi-5.3/bin
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
 
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
@@ -76,13 +78,18 @@ BOARD_HAVE_BLUETOOTH_QCOM := true
 QCOM_BT_USE_SMD_TTY := true
 
 # Camera
-USE_DEVICE_SPECIFIC_CAMERA := true
+USE_DEVICE_SPECIFIC_CAMERA  := true
+TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
 # Charger
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
+BOARD_CHARGER_ENABLE_SUSPEND     := true
+BOARD_HEALTHD_CUSTOM_CHARGER_RES := $(PLATFORM_PATH)/charger/images
 
 # CM Hardware
 BOARD_HARDWARE_CLASS += $(PLATFORM_PATH)/lineagehw
+
+#DT2W
 TARGET_TAP_TO_WAKE_NODE := "/proc/touchpanel/double_tap_enable"
 
 # Enable dexpreopt to speed boot time
@@ -101,7 +108,7 @@ BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_CACHEIMAGE_PARTITION_SIZE    := 536870912
 BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PERSISTIMAGE_PARTITION_SIZE  := 33554432
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16777216
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 18777216
 BOARD_SYSTEMIMAGE_PARTITION_SIZE   := 2147483648
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 12611874816
@@ -161,14 +168,14 @@ TARGET_HAS_LEGACY_POWER_STATS := true
 TARGET_HAS_NO_WIFI_STATS := true
 TARGET_USES_INTERACTION_BOOST := true
 
-# Protobuf-c
-PROTOBUF_SUPPORTED := true
-
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
 
+# Time services
+BOARD_USES_QC_TIME_SERVICES := true
+
 # Recovery
-TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/rootdir/etc/fstab.full
+TARGET_RECOVERY_FSTAB := $(PLATFORM_PATH)/rootdir/etc/fstab.qcom
 
 # RIL
 TARGET_RIL_VARIANT := caf
@@ -180,14 +187,20 @@ TARGET_NO_RPC := true
 include device/qcom/sepolicy/sepolicy.mk
 include device/qcom/sepolicy/legacy-sepolicy.mk
 
-#BOARD_SEPOLICY_DIRS += \
-#    $(PLATFORM_PATH)/sepolicy
+# BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy
+
+# SHIMS
+TARGET_LD_SHIM_LIBS := \
+    /system/lib/libgui.so|libshims_sensors.so \
+    /system/vendor/lib/libmmcamera2_stats_algorithm.so|libshims_atomic.so
 
 # SnapDragon LLVM Compiler
 TARGET_USE_SDCLANG := true
 
-# USB
-TARGET_USES_LEGACY_ADB_INTERFACE := true
+# Jack
+ifeq ($(ANDROID_JACK_VM_ARGS),)
+ANDROID_JACK_VM_ARGS := -Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4096m
+endif
 
 # Wifi
 BOARD_HAS_QCOM_WLAN := true
