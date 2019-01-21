@@ -140,8 +140,11 @@ PRODUCT_PACKAGES += \
     camera.device@1.0-impl \
     camera.msm8974 \
     libshims_atomic \
-    SnapdragonCamera2 \
-    Snap
+    SnapdragonCamera2
+
+# Camera configurations
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/external_camera_config.xml:system/vendor/etc/external_camera_config.xml
 
 # Charger
 WITH_LINEAGE_CHARGER := false
