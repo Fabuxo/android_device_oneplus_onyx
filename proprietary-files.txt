@@ -93,8 +93,8 @@ vendor/lib/libdrmtime.so
 vendor/lib/librpmb.so
 vendor/lib/libssd.so
 
-# Widevine
-vendor/lib/mediadrm/libwvdrmengine.so
+# Widevine DRM (from angler)
+vendor/lib/mediadrm/libwvdrmengine.so|66ba66d047044f92eb0eada1faf6a5799ded90ab
 
 # GPS
 bin/loc_launcher:vendor/bin/loc_launcher

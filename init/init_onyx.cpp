@@ -49,6 +49,12 @@ void property_override(char const prop[], char const value[])
         __system_property_add(prop, strlen(prop), value, strlen(value));
 }
 
+void property_override_dual(char const system_prop[], char const vendor_prop[], char const value[])
+{
+    property_override(system_prop, value);
+    property_override(vendor_prop, value);
+}
+
 void vendor_load_properties()
 {
     std::string platform, rf_version, device;
@@ -59,21 +65,24 @@ void vendor_load_properties()
 
     rf_version = GetProperty("ro.boot.rf_version", "");
 
+    // Init a dummy BT MAC address, will be overwritten later
+    property_set("ro.boot.btmacaddr", "00:00:00:00:00:00");
+
     if (rf_version == "101") {
         /* China */
-        property_override("ro.product.model", "ONE E1001");
+        property_override_dual("ro.product.model", "ro.vendor.product.model", "ONE E1001");
         property_set("ro.rf_version", "TDD_FDD_Ch_All");
     } else if (rf_version == "102") {
         /* Asia/Europe */
-        property_override("ro.product.model", "ONE E1003");
+        property_override_dual("ro.product.model", "ro.vendor.product.model", "ONE E1003");
         property_set("ro.rf_version", "TDD_FDD_Eu");
     } else if (rf_version == "103"){
         /* America */
-        property_override("ro.product.model", "ONE E1005");
+        property_override_dual("ro.product.model", "ro.vendor.product.model", "ONE E1005");
         property_set("ro.rf_version", "TDD_FDD_Am");
     } else if (rf_version == "107"){
         /* China CTCC Version */
-        property_override("ro.product.model", "ONE E1000");
+        property_override_dual("ro.product.model", "ro.vendor.product.model", "ONE E1000");
         property_set("ro.rf_version", "TDD_FDD_ALL_OPTR");
     }
     device = GetProperty("ro.product.device", "");

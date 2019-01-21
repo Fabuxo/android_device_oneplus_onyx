@@ -1,12 +1,10 @@
-#Compile this library only for builds with the latest modem image
-
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := libloc_eng
 LOCAL_MODULE_OWNER := qcom
-LOCAL_PROPRIETARY_MODULE := true
+LOCAL_VENDOR_MODULE := true
 
 LOCAL_MODULE_TAGS := optional
 
@@ -36,7 +34,8 @@ LOCAL_SRC_FILES += \
 
 LOCAL_CFLAGS += \
      -fno-short-enums \
-     -D_ANDROID_
+     -D_ANDROID_ \
+     -Wno-unused-parameter
 
 LOCAL_C_INCLUDES:= \
     $(TARGET_OUT_HEADERS)/gps.utils \
@@ -44,31 +43,24 @@ LOCAL_C_INCLUDES:= \
     $(LOCAL_PATH) \
     $(TARGET_OUT_HEADERS)/libflp
 
-LOCAL_COPY_HEADERS_TO:= libloc_eng/
-LOCAL_COPY_HEADERS:= \
-   LocEngAdapter.h \
-   loc.h \
-   loc_eng.h \
-   loc_eng_xtra.h \
-   loc_eng_ni.h \
-   loc_eng_agps.h \
-   loc_eng_msg.h \
-   loc_eng_log.h
-
-LOCAL_PRELINK_MODULE := false
+LOCAL_HEADER_LIBRARIES := libgps.utils_headers libloc_core_headers
 
 include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := libloc_eng_headers
+LOCAL_EXPORT_C_INCLUDE_DIRS := $(LOCAL_PATH)
+include $(BUILD_HEADER_LIBRARY)
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := gps.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_OWNER := qcom
-LOCAL_PROPRIETARY_MODULE := true
+LOCAL_VENDOR_MODULE := true
 
 LOCAL_MODULE_TAGS := optional
 
 ## Libs
-
 LOCAL_SHARED_LIBRARIES := \
     libutils \
     libcutils \
@@ -84,11 +76,8 @@ LOCAL_SRC_FILES += \
 
 LOCAL_CFLAGS += \
     -fno-short-enums \
-    -D_ANDROID_ \
-
-ifeq ($(TARGET_USES_QCOM_BSP), true)
-LOCAL_CFLAGS += -DTARGET_USES_QCOM_BSP
-endif
+     -D_ANDROID_ \
+     -Wno-unused-parameter
 
 ## Includes
 LOCAL_C_INCLUDES:= \
@@ -96,7 +85,8 @@ LOCAL_C_INCLUDES:= \
     $(TARGET_OUT_HEADERS)/libloc_core \
     $(TARGET_OUT_HEADERS)/libflp
 
-LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE_RELATIVE_PATH := hw
+
+LOCAL_HEADER_LIBRARIES := libgps.utils_headers libloc_core_headers
 
 include $(BUILD_SHARED_LIBRARY)

@@ -117,6 +117,8 @@
 
 #define MAX_AF_BRACKETING_VALUES 5
 
+#define QCAMERA_MAX_FILEPATH_LENGTH 64
+
 typedef enum {
     CAM_HAL_V1 = 1,
     CAM_HAL_V3 = 3
@@ -130,8 +132,6 @@ typedef enum {
     CAM_STATUS_ACCEPTED,      /* Parameter accepted */
     CAM_STATUS_MAX,
 } cam_status_t;
-
-#define QCAMERA_MAX_FILEPATH_LENGTH 64
 
 typedef enum {
     CAM_POSITION_BACK,
