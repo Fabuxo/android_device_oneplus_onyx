@@ -23,7 +23,7 @@ $(call inherit-product, device/oneplus/onyx/device.mk)
 
 TARGET_BOOT_ANIMATION_RES := 1080
 
-# Inherit some common Aex stuff.
+# Inherit some common Aex stuff!
 $(call inherit-product, vendor/aosp/common.mk)
 
 # Call the proprietary setup
