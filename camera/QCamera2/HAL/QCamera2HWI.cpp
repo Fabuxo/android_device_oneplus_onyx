@@ -1025,7 +1025,6 @@ QCamera2HardwareInterface::QCamera2HardwareInterface(int cameraId)
       mMetadataJob(-1),
       mReprocJob(-1),
       mRawdataJob(-1),
-      mPreviewFrameSkipValid(0),
       mInputCount(0),
       mAdvancedCaptureConfigured(false),
       mVideoMem(NULL)
@@ -2092,10 +2091,6 @@ int QCamera2HardwareInterface::stopPreview()
     // stop preview stream
     stopChannel(QCAMERA_CH_TYPE_ZSL);
     stopChannel(QCAMERA_CH_TYPE_PREVIEW);
-
-    //reset preview frame skip
-    mPreviewFrameSkipValid = 0;
-    memset(&mPreviewFrameSkipIdxRange, 0, sizeof(cam_frame_idx_range_t));
 
     // delete all channels from preparePreview
     unpreparePreview();
