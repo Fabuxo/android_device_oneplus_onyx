@@ -35,9 +35,6 @@ endif
 #Debug logs are enabled
 #LOCAL_CFLAGS += -DDISABLE_DEBUG_LOG
 
-ifeq ($(TARGET_USE_VENDOR_CAMERA_EXT),true)
-LOCAL_CFLAGS += -DUSE_VENDOR_CAMERA_EXT
-endif
 ifneq ($(call is-platform-sdk-version-at-least,18),true)
 LOCAL_CFLAGS += -DUSE_JB_MR1
 endif
@@ -53,13 +50,8 @@ LOCAL_C_INCLUDES := \
         $(LOCAL_PATH)/../../mm-image-codec/qexif \
         $(LOCAL_PATH)/../../mm-image-codec/qomx_core \
         $(LOCAL_PATH)/../util \
-        $(LOCAL_PATH)/wrapper
-
-ifeq ($(call is-platform-sdk-version-at-least,20),true)
-LOCAL_C_INCLUDES += system/media/camera/include
-else
-LOCAL_CFLAGS += -DUSE_KK_CODE
-endif
+        $(LOCAL_PATH)/wrapper \
+        system/media/camera/include
 
 LOCAL_C_INCLUDES += $(call project-path-for,qcom-display)/libgralloc
 LOCAL_HEADER_LIBRARIES := generated_kernel_headers

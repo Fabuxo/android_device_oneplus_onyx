@@ -22,9 +22,6 @@ ifeq ($(call is-board-platform-in-list,msm8974 msm8916 msm8226 msm8610),true)
 endif
 
 LOCAL_CFLAGS += -D_ANDROID_
-ifneq ($(call is-platform-sdk-version-at-least,20),true)
-    LOCAL_CFLAGS += -DUSE_KK_CODE
-endif
 
 LOCAL_COPY_HEADERS_TO := mm-camera-interface
 LOCAL_COPY_HEADERS += ../common/cam_intf.h
@@ -32,15 +29,12 @@ LOCAL_COPY_HEADERS += ../common/cam_types.h
 
 LOCAL_C_INCLUDES := \
     $(LOCAL_PATH)/inc \
-    $(LOCAL_PATH)/../common 
+    $(LOCAL_PATH)/../common \
+    $(call project-path-for,qcom-media)/mm-core/inc \
+    system/media/camera/include
 
 LOCAL_HEADER_LIBRARIES := generated_kernel_headers
 LOCAL_HEADER_LIBRARIES += media_plugin_headers
-
-LOCAL_C_INCLUDES += $(call project-path-for,qcom-media)/mm-core/inc
-ifeq ($(call is-platform-sdk-version-at-least,20),true)
-LOCAL_C_INCLUDES += system/media/camera/include
-endif
 
 ifneq ($(call is-platform-sdk-version-at-least,17),true)
   LOCAL_CFLAGS += -include bionic/libc/kernel/common/linux/socket.h
